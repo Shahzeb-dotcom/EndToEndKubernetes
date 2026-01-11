@@ -1,0 +1,31 @@
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+
+metadata:
+  name: todo-ui-ingress
+  namespace: todo-app
+
+  annotations:
+    # Nginx ingress controller use karne ka instruction
+    kubernetes.io/ingress.class: nginx
+
+    # Rewrite rule: / ko as-is backend tak bhejega
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  # Kaun sa ingress controller use hoga
+  ingressClassName: nginx
+
+  rules:
+    - host: "ayshahzeb.shop"   # Tumhara domain
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+
+            # Ingress → Service → Pod
+            backend:
+              service:
+                name: todo-ui-service   # Must match service.yaml
+                port:
+                  number: 80

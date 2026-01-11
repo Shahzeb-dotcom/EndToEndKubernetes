@@ -1,0 +1,107 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-api
+  namespace: todo-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: todo-api
+  template:
+    metadata:
+      labels:
+        app: todo-api
+    spec:
+      containers:
+        - name: todo-api
+          image: testwithkuber.azurecr.io:latest
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 10
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
+# apiVersion: apps/v1
+# kind: Deployment
+
+# metadata:
+ 
+#   name: todo-ui
+ 
+#   namespace: todo-app
+
+# spec:
+#   replicas: 2
+
+
+#   selector:
+#     matchLabels:
+#       app: todo-ui
+#   template:
+#     metadata:
+#       labels:
+#         app: todo-ui
+
+#     spec:
+#       automountServiceAccountToken: false
+
+#       containers:
+#         - name: todo-ui
+#           image: devopsacr967565.azurecr.io/todo-ui:latest
+
+#           ports:
+#             - containerPort: 80
+
+#           # env:
+#           #   - name: API_BASE_URL
+#           #     value: "https://todo-api.prod.com"
+
+#             # Agar secret use karna ho:
+#             # - name: API_KEY
+#             #   valueFrom:
+#             #     secretKeyRef:
+#             #       name: todo-ui-secret
+#             #       key: API_KEY
+
+         
+#           resources:
+#             requests:
+#               cpu: "200m"         # Minimum CPU guaranteed
+#               memory: "256Mi"     # Minimum RAM guaranteed
+#             limits:
+#               cpu: "500m"         # Max CPU allowed
+#               memory: "512Mi"     # Max RAM allowed
+
+         
+#           livenessProbe:
+#             httpGet:
+#               path: /
+#               port: 80
+#             initialDelaySeconds: 10
+#             periodSeconds: 10
+
+#           readinessProbe:
+#             httpGet:
+#               path: /
+#               port: 80
+#             initialDelaySeconds: 5
+#             periodSeconds: 5
+
+     

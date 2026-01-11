@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: todo-ui-service
+  namespace: todo-app
+
+  labels:
+    app: todo-ui
+
+spec:
+  type: ClusterIP
+  selector:
+    app: todo-ui
+
+  # -----------------------------------------------------------------
+  # PORTS:
+  # port = Service IP ka port
+  # targetPort = Pod ke andar container ka port
+  # Service → targetPort → containerPort
+  #
+  # Example:
+  # User hits:     Ingress → Service port 80
+  # Service routes: Service 80 → Pod container 80
+  # -----------------------------------------------------------------
+  ports:
+    - name: http
+      port: 80         # Service IP ka port
+      targetPort: 80   # Pod ke andar app is port pe run ho rhi
