@@ -40,6 +40,7 @@ env:
   RESOURCE_GROUP: "rg-test"
   CLUSTER_NAME: "test-vm"
   DEPLOYMENT_MANIFEST_PATH: "/manifests"
+  
 
 jobs:
   buildImage:
