@@ -82,7 +82,8 @@ jobs:
 
       - name: Push Docker image to ACR
         run: |
-          docker push testkuber.azurecr.io/testkuber:${{ github.sha }}
+          # docker push testkuber.azurecr.io/testkuber:${{ github.sha }}
+          docker push testkuber.azurecr.io/testkuber --all-tags
 
 
          
