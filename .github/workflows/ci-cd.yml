@@ -68,8 +68,17 @@ jobs:
         run: |
           docker build \
             -t testkuber.azurecr.io/testkuber:${{ github.sha }} \
-            -f MicroTodoUI-main/Dockerfile \
-            MicroTodoUI-main
+              -t testkuber.azurecr.io/testkuber:latest \
+              -t testkuber.azurecr.io/testkuber:v1.0.0 \
+              -f MicroTodoUI-main/Dockerfile \
+              MicroTodoUI-main
+              
+      #       -t testkuber.azurecr.io/testkuber:${{ github.sha }} \
+      #       -f MicroTodoUI-main/Dockerfile \
+      #       MicroTodoUI-main
+         
+              
+
 
       - name: Push Docker image to ACR
         run: |
