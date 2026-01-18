@@ -59,15 +59,24 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      # Builds and pushes an image up to your Azure Container Registry
-      - name: Build and push image to ACR
+      - name: Login to ACR
         run: |
-          az acr build \
-            --image testkuber:${{ github.sha }} \
-            --registry testkuber \
-            --resource-group rg-test \
-            --file MicroTodoUI-main/Dockerfile \
+         az acr login --name testkuber
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            -t testkuber.azurecr.io/testkuber:${{ github.sha }} \
+            -f MicroTodoUI-main/Dockerfile \
             MicroTodoUI-main
+
+      - name: Push Docker image to ACR
+        run: |
+          docker push testkuber.azurecr.io/testkuber:${{ github.sha }}
+
+
+         
+
 
 
 
