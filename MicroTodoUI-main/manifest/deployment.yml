@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: todo-api
-          image: testkuber.azurecr.io/testkuber:latest
+          image: image: testkuber.azurecr.io/testkuber:${GITHUB_SHA}
           ports:
             - containerPort: 80
           resources:
