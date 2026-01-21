@@ -105,6 +105,10 @@ jobs:
           admin: 'false'
           use-kubelogin: 'true'
 
+      - name: Apply Namespace
+        run: |
+          kubectl create namespace todo-app
+
       - name: Apply Kubernetes manifests
         run: |
           kubectl apply -f MicroTodoUI-main/manifest
