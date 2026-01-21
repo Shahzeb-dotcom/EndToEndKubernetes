@@ -117,18 +117,29 @@ jobs:
           admin: 'false'
           use-kubelogin: 'true'
 
-      - name: Create namespace if not exists
-        run: |
-          if kubectl get namespace todo-app >/dev/null 2>&1; then
-            echo "Namespace already exists, skipping..."
-          else
-            kubectl create namespace todo-app
-          fi
 
 
-      - name: Apply Kubernetes manifests
+      - name: Deploy to AKS (update image)
         run: |
-          kubectl apply -f MicroTodoUI-main/manifest
+          kubectl set image deployment/todo-api \
+          todo-api=testkuber.azurecr.io/testkuber:${{ github.sha }} \
+          -n todo-app \
+          --record
+
+
+
+      # - name: Create namespace if not exists
+      #   run: |
+      #     if kubectl get namespace todo-app >/dev/null 2>&1; then
+      #       echo "Namespace already exists, skipping..."
+      #     else
+      #       kubectl create namespace todo-app
+      #     fi
+
+
+      # - name: Apply Kubernetes manifests
+      #   run: |
+      #     kubectl apply -f MicroTodoUI-main/manifest
 
 
 
