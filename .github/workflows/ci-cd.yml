@@ -16,8 +16,8 @@
 name: Build and deploy an app to AKS
 
 on:
-  # push:
-  #   branches: ["main"]
+  push:
+    branches: ["main"]
   workflow_dispatch:
 
 env:
@@ -47,21 +47,33 @@ jobs:
     - name: Login to ACR
       run: az acr login --name testkuber
 
+
+    - name: Build Docker image
+      run: |
+        docker build \
+          -t testkuber.azurecr.io/testkuber:${{ github.sha }} \
+          -f MicroTodoUI-main/Dockerfile \
+          MicroTodoUI-main
+
+    - name: Push Docker image
+      run: |
+        docker push testkuber.azurecr.io/testkuber:${{ github.sha }}
+
     # ✅ REQUIRED for multi-arch
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
+    # - name: Set up Docker Buildx
+    #   uses: docker/setup-buildx-action@v3
 
     # ✅ MULTI-ARCH BUILD + PUSH
-    - name: Build and push multi-arch image
-      run: |
-        docker buildx build \
-          --platform linux/amd64,linux/arm64 \
-          -t testkuber.azurecr.io/testkuber:${{ github.sha }} \
-          -t testkuber.azurecr.io/testkuber:latest \
-          -t testkuber.azurecr.io/testkuber:v1.0.0 \
-          -f MicroTodoUI-main/Dockerfile \
-          MicroTodoUI-main \
-          --push
+    # - name: Build and push multi-arch image
+    #   run: |
+    #     docker buildx build \
+    #       --platform linux/amd64,linux/arm64 \
+    #       -t testkuber.azurecr.io/testkuber:${{ github.sha }} \
+    #       -t testkuber.azurecr.io/testkuber:latest \
+    #       -t testkuber.azurecr.io/testkuber:v1.0.0 \
+    #       -f MicroTodoUI-main/Dockerfile \
+    #       MicroTodoUI-main \
+    #       --push
 
 
 
