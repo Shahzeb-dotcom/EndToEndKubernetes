@@ -105,9 +105,14 @@ jobs:
           admin: 'false'
           use-kubelogin: 'true'
 
-      - name: Apply Namespace
+      - name: Create namespace if not exists
         run: |
-          kubectl create namespace todo-app
+          if kubectl get namespace todo-app >/dev/null 2>&1; then
+            echo "Namespace already exists, skipping..."
+          else
+            kubectl create namespace todo-app
+          fi
+
 
       - name: Apply Kubernetes manifests
         run: |
