@@ -68,7 +68,7 @@ jobs:
       - name: Build and push multi-arch image
         run: |
           docker buildx build \
-            --platform linux/amd64,linux/arm64 \
+            --platform linux/amd64 \          # ← only amd64 (remove linux/arm64)
             -t ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ matrix.service.image }}:${{ github.sha }} \
             -t ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ matrix.service.image }}:latest \
             -f ${{ matrix.service.folder }}/Dockerfile \
