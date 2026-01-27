@@ -67,13 +67,22 @@ jobs:
 
       - name: Build and push multi-arch image
         run: |
+          CONTEXT="${{ matrix.service.folder }}"
           docker buildx build \
-            --platform linux/amd64 \          # ← only amd64 (remove linux/arm64)
+            --platform linux/amd64 \
             -t ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ matrix.service.image }}:${{ github.sha }} \
             -t ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ matrix.service.image }}:latest \
-            -f ${{ matrix.service.folder }}/Dockerfile \
-            ${{ matrix.service.folder }} \
+            -f "$CONTEXT/Dockerfile" \
+            "$CONTEXT" \
             --push
+
+      - name: Debug matrix values
+        run: |
+          echo "Service: ${{ matrix.service.name }}"
+          echo "Folder: ${{ matrix.service.folder }}"
+          echo "Image: ${{ matrix.service.image }}"
+          ls -la ${{ matrix.service.folder }}   # should show Dockerfile etc.
+          ls ${{ matrix.service.folder }}/Dockerfile || echo "Dockerfile missing!"
 
   deploy-to-aks:
     runs-on: ubuntu-latest
