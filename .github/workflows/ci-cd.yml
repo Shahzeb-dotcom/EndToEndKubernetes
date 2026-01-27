@@ -21,7 +21,7 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_CONTAINER_REGISTRY: "tesvmacr"          # your ACR name
+  AZURE_CONTAINER_REGISTRY: "testvmacr"          # your ACR name
   RESOURCE_GROUP: "rg-test"
   CLUSTER_NAME: "test-vm"
 
