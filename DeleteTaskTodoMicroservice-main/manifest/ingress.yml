@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: todo-delete-tasks-api-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: delete-task-api.ayshahzeb.shop
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: todo-delete-tasks-api
+                port:
+                  number: 80

@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-add-tasks-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: todo-add-tasks-api
+  template:
+    metadata:
+      labels:
+        app: todo-add-tasks-api
+    spec:
+      containers:
+      - name: todo-add-tasks-api
+        image: appacr0098.azurecr.io/todo-add-tasks-api:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DB_HOST
+          valueFrom:
+          secretKeyRef:
+            name: sqlserver-secret
+            key: DB_HOST
+                
+        - name: DB_NAME
+          valueFrom:
+          secretKeyRef:
+            name: sqlserver-secret
+            key: DB_NAME
+              
+        - name: DB_USER
+          valueFrom:
+          secretKeyRef:
+            name: sqlserver-secret
+            key: DB_USER
+                
+        - name: DB_PASSWORD
+          valueFrom:           # ← This line has 4 extra spaces (or is indented too much)
+            secretKeyRef:
+              name: sqlserver-secret
+              key: DB_PASSWORD
