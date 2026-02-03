@@ -114,25 +114,29 @@ jobs:
           resource-group: ${{ env.RESOURCE_GROUP }}
           cluster-name: ${{ env.CLUSTER_NAME }}
           use-kubelogin: 'true'
+      - name: Ensure namespace exists
+        run: |
+          kubectl get namespace todo-app || kubectl create namespace todo-app
+
 
       - name: Update deployments with new images
         run: |
-          # Update each deployment with its new image tag
           kubectl set image deployment/todo-add-tasks-api \
             todo-add-tasks-api=${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/todo-add-tasks:${{ github.sha }} \
-            -n todo-app --record
-
+            -n todo-app
+      
           kubectl set image deployment/todo-delete-tasks-api \
             todo-delete-tasks-api=${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/todo-delete-tasks:${{ github.sha }} \
-            -n todo-app --record
-
+            -n todo-app
+      
           kubectl set image deployment/todo-get-tasks-api \
             todo-get-tasks-api=${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/todo-get-tasks:${{ github.sha }} \
-            -n todo-app --record
-
+            -n todo-app
+      
           kubectl set image deployment/todo-ui \
             todo-ui=${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/todo-ui:${{ github.sha }} \
-            -n todo-app --record   # adjust deployment name if different
+            -n todo-app
+
 
           # Optional: rollout status to wait/verify
           kubectl rollout status deployment/todo-add-tasks-api -n todo-app
