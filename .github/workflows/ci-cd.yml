@@ -15,7 +15,6 @@
 
 name: Build and deploy microservices to AKS
 
-
 on:
   push:
     branches: ["main"]
