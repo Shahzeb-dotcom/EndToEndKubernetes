@@ -14,7 +14,6 @@
 #    - DEPLOYMENT_MANIFEST_PATH (path to the manifest yaml for your deployment)
 
 name: Build and deploy microservices to AKS
-
 on:
   push:
     branches: ["main"]
