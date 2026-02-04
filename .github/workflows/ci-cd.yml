@@ -121,6 +121,9 @@ jobs:
 
       - name: Update deployments with new images
         run: |
+          kubectl set image deployment/todo-ui \
+            todo-ui=${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/todo-ui:${{ github.sha }} \
+            -n todo-app
           kubectl set image deployment/todo-add-tasks-api \
             todo-add-tasks-api=${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/todo-add-tasks:${{ github.sha }} \
             -n todo-app
@@ -131,10 +134,6 @@ jobs:
       
           kubectl set image deployment/todo-get-tasks-api \
             todo-get-tasks-api=${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/todo-get-tasks:${{ github.sha }} \
-            -n todo-app
-      
-          kubectl set image deployment/todo-ui \
-            todo-ui=${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/todo-ui:${{ github.sha }} \
             -n todo-app
 
 
